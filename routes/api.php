@@ -24,4 +24,5 @@ Route::group(['prefix' => 'book'], function () {
     Route::get('edit/{id}', 'BookController@edit');
     Route::post('update/{id}', 'BookController@update');
     Route::delete('delete/{id}', 'BookController@delete');
+    Route::get('export','BookController@exportExcel')->name('export');
 });

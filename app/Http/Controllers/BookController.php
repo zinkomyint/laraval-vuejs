@@ -51,4 +51,9 @@ class BookController extends Controller
 
         return response()->json('The book successfully deleted');
     }
+    public function exportExcel()
+    {
+        $books = Book::all();
+        return response()->json($books);
+    }
 }

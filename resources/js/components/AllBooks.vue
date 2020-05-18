@@ -2,6 +2,22 @@
     <div>
         <h3 class="text-center">All Books</h3><br/>
 
+         <download-excel
+            class="btn btn-default"
+            :data="json_data"
+            :fields="json_fields"
+            worksheet="My Worksheet"
+            name="book.xls"
+        >
+            <button
+                type="button"
+                class="btn btn-success"
+                @click="exportBookData"
+            >
+                Export
+            </button>
+        </download-excel>
+
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -34,10 +50,28 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import JsonExcel from 'vue-json-excel'
+
+Vue.component('downloadExcel', JsonExcel)
     export default {
         data() {
             return {
-                books: []
+                books: [],
+                    json_fields: {
+                Id: "id",
+                Name: "name",
+                Author: "author"
+            },
+            json_data: [],
+            json_meta: [
+                [
+                    {
+                        key: "charset",
+                        value: "utf-8"
+                    }
+                ]
+            ]
             }
         },
         created() {
@@ -55,7 +89,16 @@
                         let i = this.books.map(item => item.id).indexOf(id); // find index of your object
                         this.books.splice(i, 1)
                     });
+            },
+             exportBookData()
+            {
+                 this.axios
+                .get('http://localhost:8000/api/book/export')
+                .then(response => {
+                    this.json_data = response.data;
+                });
             }
+            
         }
     }
 </script>
